@@ -1,0 +1,72 @@
+
+class Main {
+    public static void main(String[] args) {
+        boolean[][]board=new boolean[5][5];
+        NQueen(board,0);
+    }
+    private static void display(boolean[][]board)
+    {
+       for(boolean[]arr:board)
+       {
+           for(boolean check:arr)
+           {
+               if(check)
+               {
+                   System.out.print("Q"+" ");
+               }
+               else
+               System.out.print("X"+" ");
+           }
+           System.out.println();
+       }
+    }
+    private static void NQueen(boolean[][]board,int row)
+    {
+        if(row==board.length)
+        {
+            display(board);
+            System.out.println();
+            return;
+        }
+        for(int col=0;col<board.length;col++)
+        {
+            if(isSafe(board,row,col))
+            {
+                board[row][col]=true;
+                NQueen(board,row+1);
+                board[row][col]=false;
+            }
+        }
+    }
+    private static boolean isSafe(boolean[][]board,int row,int col)
+    {
+        //top straight
+        
+        for(int ind=row;ind>=0;ind--)
+        {
+            if(board[ind][col])
+                return false;
+        }
+        int tempRow=row;
+        int tempCol=col;
+        //check top left
+        while(tempRow>=0 && tempCol>=0)
+        {
+            if(board[tempRow][tempCol])
+                return false;
+            tempRow--;
+            tempCol--;
+        }
+        //chech top right
+        tempRow=row;
+        tempCol=col;
+       while(tempRow>=0 && tempCol<board.length)
+       {
+           if(board[tempRow][tempCol])
+                return false;
+             tempRow--;
+             tempCol++;
+       }
+       return true;
+    }
+}
