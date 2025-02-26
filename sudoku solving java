@@ -1,0 +1,106 @@
+// Online Java Compiler
+// Use this editor to write, compile and run your Java code online
+
+class Main {
+    public static void main(String[] args) {
+         int[][] sudoku = {
+            {5, 3, 0, 0, 7, 0, 0, 0, 0},
+            {6, 0, 0, 1, 9, 5, 0, 0, 0},
+            {0, 9, 8, 0, 0, 0, 0, 6, 0},
+            {8, 0, 0, 0, 6, 0, 0, 0, 3},
+            {4, 0, 0, 8, 0, 3, 0, 0, 1},
+            {7, 0, 0, 0, 2, 0, 0, 0, 6},
+            {0, 6, 0, 0, 0, 0, 2, 8, 0},
+            {0, 0, 0, 4, 1, 9, 0, 0, 5},
+            {0, 0, 0, 0, 8, 0, 0, 7, 9}
+        };
+        if(solve(sudoku))
+        {
+            display(sudoku);
+        }
+    }
+    static void display(int[][]sudoku)
+    {
+         for(int ind=0;ind<sudoku.length;ind++)
+        {
+            for(int wkind=0;wkind<sudoku.length;wkind++)
+            {
+               System.out.print(sudoku[ind][wkind]+" ") ;
+            }
+            System.out.println();
+        }
+    }
+    private static boolean solve(int[][]sudoku)
+    {
+        int length=sudoku.length;
+        int row=-1;
+        int col=-1;
+        boolean emptyLeft=true;
+        for(int ind=0;ind<sudoku.length;ind++)
+        {
+            for(int wkind=0;wkind<sudoku.length;wkind++)
+            {
+                if(sudoku[ind][wkind]==0)
+                {
+                    row=ind;
+                    col=wkind;
+                    emptyLeft=false;
+                    break;
+                }
+            }
+            if(emptyLeft==false)
+            break;
+        }
+            if(emptyLeft)
+            return true;
+            for(int num=1;num<=9;num++)
+            {
+                if(isSafe(sudoku,row,col,num))
+                {
+                    sudoku[row][col]=num;
+                    if(solve(sudoku))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        sudoku[row][col]=0;
+                    }
+                        
+                }
+                
+
+        }
+        return false;
+        
+    }
+    private static boolean isSafe(int[][]sudoku,int row,int col,int num)
+    {
+        //chech row
+        for(int ind=0;ind<sudoku.length;ind++)
+        {
+            if(sudoku[row][ind]==num)
+            return false;
+        }
+        //check col
+        for(int[]nums:sudoku)
+        {
+            if(nums[col]==num)
+            return false;
+        }
+        //check 3*3 matrix
+        int sqrt=(int)Math.sqrt(sudoku.length);
+        int rowStart=row-row%sqrt;
+        int colStart=col-col%sqrt;
+        for(int r=rowStart;r<rowStart+sqrt;r++)
+        {
+            for(int c=colStart;c<colStart+sqrt;c++)
+            {
+                if(sudoku[r][c]==num)
+                return false;
+            }
+        }
+        return true;
+    }
+    
+}
